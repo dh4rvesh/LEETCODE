@@ -1,0 +1,25 @@
+name: Update LeetCode Cookies
+
+on:
+  schedule:
+    - cron: "0 0 */14 * *"   # every 14 days; adjust if needed
+  workflow_dispatch:         # allow manual run
+
+jobs:
+  update-cookies:
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: write         # to update secrets via the Actions API
+      contents: read
+
+    steps:
+      - name: Run LeetCode Cookies Updater
+        uses: vishrutkmr7/UpdateLCCookies@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-owner: ${{ github.repository_owner }}
+          repo-name: ${{ github.event.repository.name }}
+          session-secret-name: LEETCODE_SESSION
+          csrf-secret-name: LEETCODE_CSRF_TOKEN
+          # login-cookie: ${{ secrets.LEETCODE_LOGIN_COOKIE }}  # if required by the action
